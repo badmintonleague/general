@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard</title>
+  <link rel="apple-touch-icon" href="badmintonicon.png">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <h1>📈 Leaderboard</h1>
+    <button id="menuBtn">☰</button>
+  </header>
+
+  <main id="leaderboard">
+    <p class="loading">Loading leaderboard…</p>
+  </main>
+
+  <!-- PLAYER DETAIL MODAL -->
+  <div id="playerBackdrop" class="modal-backdrop hidden"></div>
+
+  <div id="playerModal" class="modal hidden">
+    <h2 id="playerName"></h2>
+    <p id="playerEmoji" style="font-size:32px; margin-top:0;"></p>
+  
+    <!-- TABS -->
+    <div class="modal-tabs">
+      <button id="tabStats" class="tab active">Stats</button>
+      <button id="tabPartners" class="tab">Matchups</button>
+    </div>
+  
+    <!-- TAB CONTENT -->
+    <div id="playerStats"></div>
+    <div id="playerPartners" class="hidden"></div>
+  
+    <button class="cancel-btn" onclick="closePlayerModal()">Close</button>
+  </div>
+
+  <nav id="menu" class="hidden">
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="tournaments.html">Tournaments</a>
+    <a href="players.html">Players</a>
+    <a href="achievements.html">Achievements</a>
+  
+    <!-- LOCATION SWITCH (BOTTOM) -->
+    <div class="location-switch">
+      <div class="location-row" onclick="toggleLocationMenu()">
+        <span id="currentLocation">Scarborough</span>
+        <span class="switch-icon">⇄</span>
+      </div>
+  
+      <div id="locationOptions" class="location-options hidden">
+        <div onclick="switchLocation('pickering')">Pickering</div>
+      </div>
+    </div>
+  </nav>
+
+
+  <script src="js/api.js"></script>
+  <script src="js/leaderboard.js"></script>
+  <script src="js/location.js"></script>
+</body>
+</html>

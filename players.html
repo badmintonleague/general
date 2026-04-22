@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Players</title>
+  <link rel="apple-touch-icon" href="badmintonicon.png">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <h1>🏸 Players</h1>
+    <button id="menuBtn">☰</button>
+  </header>
+
+  <main id="players">
+    <button class="start-btn" id="addPlayerBtn">+ Add Player</button>
+    <p class="loading">Loading players…</p>
+  </main>
+
+  <!-- ADD PLAYER MODAL -->
+  <div id="addPlayerBackdrop" class="modal-backdrop hidden"></div>
+
+  <div id="addPlayerModal" class="modal hidden">
+    <h2>Add Player</h2>
+
+    <label>
+      Name
+      <input
+        id="playerNameInput"
+        type="text"
+        placeholder="Enter player name"
+        style="width:100%; padding:8px; margin:8px 0;"
+      />
+    </label>
+
+    <label>
+      Gender
+      <select
+        id="playerGenderInput"
+        style="width:100%; padding:8px; margin-bottom:12px;"
+      >
+        <option value="">Select gender</option>
+        <option value="M">M</option>
+        <option value="F">F</option>
+      </select>
+    </label>
+
+    <button class="submit-btn" onclick="submitAddPlayer()">Add Player</button>
+    <button class="cancel-btn" onclick="closeAddPlayerModal()">Cancel</button>
+  </div>
+
+  <nav id="menu" class="hidden">
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="tournaments.html">Tournaments</a>
+    <a href="players.html">Players</a>
+    <a href="achievements.html">Achievements</a>
+  
+    <!-- LOCATION SWITCH (BOTTOM) -->
+    <div class="location-switch">
+      <div class="location-row" onclick="toggleLocationMenu()">
+        <span id="currentLocation">Scarborough</span>
+        <span class="switch-icon">⇄</span>
+      </div>
+  
+      <div id="locationOptions" class="location-options hidden">
+        <div onclick="switchLocation('pickering')">Pickering</div>
+      </div>
+    </div>
+  </nav>
+
+  <script src="js/api.js"></script>
+  <script src="js/location.js"></script>
+
+
+  <script>
+    /* MENU TOGGLE */
+    const menuBtn = document.getElementById("menuBtn");
+    const menu = document.getElementById("menu");
+    menuBtn.onclick = () => menu.classList.toggle("hidden");
+
+    const container = document.getElementById("players");
+    const addBtn = document.getElementById("addPlayerBtn");
+
+    addBtn.onclick = openAddPlayerModal;
+
+    /* LOAD PLAYERS */
+    async function loadPlayerList() {
+      const players = await loadPlayers();
+      container.innerHTML = "";
+      container.appendChild(addBtn);
+
+      Object.entries(players).forEach(([id, name]) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<strong>${name}</strong>`;
+        container.appendChild(card);
+      });
+    }
+
+    loadPlayerList();
+
+    /* MODAL CONTROL */
+    function openAddPlayerModal() {
+      document.getElementById("playerNameInput").value = "";
+      document.getElementById("playerGenderInput").value = "";
+      document.getElementById("addPlayerBackdrop").classList.remove("hidden");
+      document.getElementById("addPlayerModal").classList.remove("hidden");
+    }
+
+    function closeAddPlayerModal() {
+      document.getElementById("addPlayerBackdrop").classList.add("hidden");
+      document.getElementById("addPlayerModal").classList.add("hidden");
+    }
+
+    /* SUBMIT */
+    async function submitAddPlayer() {
+      const name = document.getElementById("playerNameInput").value.trim();
+      const gender = document.getElementById("playerGenderInput").value;
+
+      if (!name) {
+        alert("Please enter a name.");
+        return;
+      }
+
+      if (gender !== "M" && gender !== "F") {
+        alert("Please select gender M or F.");
+        return;
+      }
+
+      const res = await apiPost({
+        action: "addPlayer",
+        name,
+        gender
+      });
+
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+
+      // Clear cached player map so reload fetches fresh data
+      PLAYER_MAP = null;
+
+      closeAddPlayerModal();
+      loadPlayerList();
+    }
+  </script>
+</body>
+</html>
