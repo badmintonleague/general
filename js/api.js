@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzCOybMNBmCJlX9YyTEm9DKvl1ktrFLFvUQu6CT20pfeyIrvvt9KA-Hck_ncClHety5/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwvuxKyWzwEQ4cK8uWDm0yvE_CAkXoYhHmDnp6aOvHBmk-aRqnGiTsYV274CTVcdK3F/exec";
 
 let PLAYER_MAP = null;
 
