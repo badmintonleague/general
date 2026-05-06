@@ -1,12 +1,14 @@
 function toggleLocationMenu() {
-  document
-    .getElementById("locationOptions")
-    .classList.toggle("hidden");
+  document.getElementById("locationOptions").classList.toggle("hidden");
 }
 
-function switchLocation(city) {
-  if (city === "pickering") {
-    window.location.href = "https://badmintonleague.github.io/pickering/leaderboard.html";
+function switchLocation(day) {
+  const locations = {
+    thursday:    "https://badmintonleague.github.io/pickering/leaderboard.html",
+    monday: "https://badmintonleague.github.io/scarborough/leaderboard.html",
+  };
+
+  if (locations[day]) {
+    window.location.href = locations[day];
   }
 }
-
